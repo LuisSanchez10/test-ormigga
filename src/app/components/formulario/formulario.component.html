@@ -1,0 +1,107 @@
+<div class="alert alert-primary" role="alert" *ngIf="haycookie">
+  {{cookieValue}}
+</div>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Usuario Github</div>
+                <div class="card-body">
+                    <form [formGroup]="form">
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Nombres</label>
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control" name="name" formControlName="name" value="" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="lastname" class="col-md-4 col-form-label text-md-right">Apellidos</label>
+                            <div class="col-md-6">
+                                <input id="lastname" type="text" class="form-control" name="lastname" formControlName="lastname" value="" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="dni" class="col-md-4 col-form-label text-md-right">Cédula</label>
+                            <div class="col-md-6">
+                                <input id="dni" type="text" class="form-control" name="dni" value="" formControlName="dni" required autofocus>
+                                <small id="dniHelp" *ngIf="form.controls.dni.errors?.pattern" class="form-text text-danger">Ingrese solo números</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="date" class="col-md-4 col-form-label text-md-right">Fecha de nacimiento</label>
+                            <div class="col-md-6">
+                              <input class="form-control" id="date" type="date" value="" name="date" id="example-datetime-local-input" formControlName="date" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control" formControlName="email" name="email" value="" required autofocus>
+                                <small id="dniHelp" *ngIf="form.controls.email.errors?.email" class="form-text text-danger">Ingrese un correo válido</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="address" class="col-md-4 col-form-label text-md-right">Usuario Github</label>
+                            <div class="col-md-6">
+                                <input id="address" type="text" class="form-control" formControlName="address" name="address" value="" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mx-auto">
+                            <div class="col-md-6 mx-auto">
+                                <button type="submit" class="btn btn-success btn-block" [disabled] = "!form.valid" (click)="send()">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+	<div class="alert alert-danger mt-5" role="alert" *ngIf="haydata == 1">
+	  No existe información de este usuario o no tiene repositorios públicos
+	</div>
+	<div *ngIf="haydata == 2">
+		<div class="container-fluid row mx-auto mt-2">
+            <div class="mr-auto row ml-2 form-inline">
+                <label class="mr-1"><b>Repositorios del usuario {{username}}</b></label>
+            </div>
+            <div class="ml-auto form-inline">
+        	<div class="form-group row">
+		          <input type="text" name="searchString" class="form-control mr-4" placeholder="Buscar Repositorio" (input)="search($event.target.value)">
+	        </div>
+	      </div>
+        </div>
+        <div class="table mt-2 container-fluid">
+	        <table class="table table-bordered">
+	            <thead class="thead-light">
+	            <th>Lenguaje</th>
+	            <th>Branch por defecto</th>
+	            <th>Git URL</th>
+	            <th>Nombre</th>
+	            <th>Descripción</th>
+	            </thead>
+	            <tbody>
+		            <tr *ngFor="let repo of data | paginate: { itemsPerPage: 5, currentPage: p }">
+		                <td>{{repo.language}}</td>
+		                <td>{{repo.default_branch}}</td>
+		                <td>{{repo.git_url}}</td>
+		                <td>{{repo.name}}</td>
+		                <td>{{repo.description}}</td>
+		            </tr>
+	            </tbody>
+	        </table>
+	        <div style="text-align: center; padding-right: 40px;">
+	            <pagination-controls class="my-pagination" (pageChange)="p = $event" previousLabel=""
+	                  nextLabel="">
+	            </pagination-controls>
+	        </div>
+	    </div>
+	</div>
+</div>
